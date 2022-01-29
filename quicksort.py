@@ -14,8 +14,30 @@ Algorithm:
             > If left is greater and right is less than, we swap positions of left and right
             > Up until left and right index are at same position
             > At this point, swap pivot and the number because it would be greater than pivot
-    NOTE: We do not create a seperate list when sorting. Instead, we pass the start end and index of the same list to the
-            quick_sort function
+    NOTE: 
+            1. We do not create a seperate list when sorting. Instead, we pass the start end and index of the same list to the 
+                quick_sort function
+            2. The if condition within the quick_sort function must be tied together so that a single check is done per loop
+                we don't want the loop checking for l < pivot and r > pivot on the same loop as this would cause right index to
+                prematurely swap with left index since right moves to an index that has already being checked
+                
+                Below is a wrong implementation explaining what i mean::
+
+                def quick_sort(arr, start, end):
+                    pivot = end
+                    l , r = start, end - 1
+                    while l < r:
+                        if arr[l] < arr[pivot]:
+                            l += 1
+                        if arr[r] > arr[pivot]:
+                            r -= 1
+                        if arr[l] > arr[pivot] and arr[r] < arr[pivot]:
+                            arr[l], arr[r] = arr[r], arr[l]
+                    if arr[l] > arr[pivot]:
+                        arr[l], arr[pivot] = arr[pivot], arr[l]
+                        return l
+                    return pivot
+    
 """
 
 def quick_sort(arr, start, end):
@@ -44,7 +66,7 @@ def call_quick_sort(arr, left, right):
         call_quick_sort(arr, left, pivot -1)
         call_quick_sort(arr, pivot+1, right)
     
-b = list(range(2000))
+b = list(range(10))
 random.shuffle(b)
 print("BEFORE:: ", b)
 
